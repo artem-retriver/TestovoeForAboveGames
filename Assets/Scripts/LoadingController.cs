@@ -1,6 +1,8 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Random = UnityEngine.Random;
 
 public class LoadingController : MonoBehaviour
 {
@@ -17,6 +19,9 @@ public class LoadingController : MonoBehaviour
     [SerializeField] private float floatAmplitude = 10f;
     [SerializeField] private float floatSpeed = 2f;
     [SerializeField] private bool randomFloatOffset = true;
+    
+    [Header("Canvas group:")]
+    [SerializeField] private CanvasGroup mainMenuGroup;
     
     private Coroutine[] _pulseCoroutines;
     private Vector3[] _originalPositions;
@@ -86,10 +91,13 @@ public class LoadingController : MonoBehaviour
         _isAnimating = true;
         
         StopAllCoroutines();
-        StartCoroutine(AnimateHeartsSequence());
+        StartCoroutine(AnimateHeartsSequence(() =>
+        {
+            StartCoroutine(FadeInCanvasGroup(mainMenuGroup, 0.5f));
+        }));
     }
 
-    private IEnumerator AnimateHeartsSequence()
+    private IEnumerator AnimateHeartsSequence(Action onComplete = null)
     {
         for (int i = 0; i < hearts.Length; i++)
         {
@@ -105,8 +113,27 @@ public class LoadingController : MonoBehaviour
                 }
             }
         }
+
+        yield return new WaitForSeconds(0.5f);
         
+        onComplete?.Invoke();
         _isAnimating = false;
+    }
+    
+    private IEnumerator FadeInCanvasGroup(CanvasGroup group, float duration)
+    {
+        group.alpha = 0f;
+        float elapsed = 0f;
+    
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            group.alpha = Mathf.Lerp(0f, 1f, t);
+            yield return null;
+        }
+    
+        group.alpha = 1f;
     }
 
     private IEnumerator FillHeartColor(int heartIndex)
