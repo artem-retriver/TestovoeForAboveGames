@@ -309,6 +309,8 @@ public class ImageGallery : MonoBehaviour
 
     public void HideBasePopup()
     {
+        SoundController.Instance.PlayImageClose();
+        
         StartCoroutine(ScaleAnimation(basePopup.transform, Vector3.zero, 0.1f, () =>
         {
             basePopupImage.sprite = null;
@@ -324,6 +326,8 @@ public class ImageGallery : MonoBehaviour
 
     public void HidePremiumPopup()
     {
+        SoundController.Instance.PlayImageClose();
+        
         StartCoroutine(ScaleAnimation(premiumPopup.transform, Vector3.zero, 0.1f, () =>
         {
             premiumPopup.SetActive(false);

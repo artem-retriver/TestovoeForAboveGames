@@ -3,9 +3,11 @@ using UnityEngine.UI;
 
 public class TabController : MonoBehaviour
 {
+    [Header("Main Objects:")]
     [SerializeField] private Button[] tabButtons;
     [SerializeField] private ImageGallery gallery;
 
+    [Header("Main options:")]
     [SerializeField] private Color activeColor = Color.white;
     [SerializeField] private Color inactiveColor = new Color(0.7f, 0.7f, 0.7f, 0.8f);
 
@@ -28,7 +30,11 @@ public class TabController : MonoBehaviour
                 continue;
 
             TabType tab = (TabType)i;
-            tabButtons[i].onClick.AddListener(() => SetActiveTab(tab));
+            tabButtons[i].onClick.AddListener(() =>
+            {
+                SoundController.Instance.PlayTabClick();
+                SetActiveTab(tab);
+            });
         }
 
         SetActiveTab(TabType.All);

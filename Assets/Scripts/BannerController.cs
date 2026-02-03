@@ -13,7 +13,7 @@ public class BannerCarousel : MonoBehaviour, IDragHandler, IEndDragHandler
     [SerializeField] private float swipeThreshold = 0.2f;
     [SerializeField] private float transitionDuration = 0.3f;
     
-    [Header("Visuals")]
+    [Header("DOTS options:")]
     [SerializeField] private Image[] dots;
     [SerializeField] private Color activeDotColor = Color.white;
     [SerializeField] private Color inactiveDotColor = new Color(1, 1, 1, 0.5f);
@@ -201,6 +201,8 @@ public class BannerCarousel : MonoBehaviour, IDragHandler, IEndDragHandler
         }
         
         _isDragging = false;
+        
+        SoundController.Instance.PlayBannerSwipe();
         
         float swipeDistance = eventData.position.x - eventData.pressPosition.x;
         

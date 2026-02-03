@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class ContentController : MonoBehaviour, IPointerClickHandler
 {
+    [Header("Main objects:")]
     [SerializeField] private Image mainImage;
     [SerializeField] private Image premiumImage;
 
@@ -38,8 +39,11 @@ public class ContentController : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(!_isReady)
+        if (!_isReady)
+        {
+            SoundController.Instance.PlayImageNotReady();
             return;
+        }
 
         if (_isPremium)
         {
@@ -49,5 +53,7 @@ public class ContentController : MonoBehaviour, IPointerClickHandler
         {
             _imageGallery.ShowBasePopup(mainImage);
         }
+        
+        SoundController.Instance.PlayImageClick();
     }
 }

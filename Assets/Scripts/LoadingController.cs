@@ -133,7 +133,10 @@ public class LoadingController : MonoBehaviour
             yield return null;
         }
     
+        group.blocksRaycasts = true;
         group.alpha = 1f;
+        
+        SoundController.Instance.PlayBackgroundMusic();
     }
 
     private IEnumerator FillHeartColor(int heartIndex)
